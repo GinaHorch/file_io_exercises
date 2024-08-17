@@ -20,7 +20,19 @@ def count_mentions(some_colour_word: str):
     """
     # hint - the .lower() method will convert a Python string to lowercase.
     # https://www.w3schools.com/python/ref_string_lower.asp
-    pass
+    with open("colours_20_simple.csv") as color_csv:
+        csv_reader = csv.reader(color_csv)
+        next(csv_reader)
+
+        count = 0
+        for row in csv_reader:
+            if row: #to skip empty lines
+                color_name_from_csv = row[2]
+                if some_colour_word.lower() in color_name_from_csv.lower():
+                    count += 1
+        return count
+
+
 
 
 def generate_coloured_text(colour_name: str):
@@ -42,7 +54,16 @@ def generate_coloured_text(colour_name: str):
     Example: supplying the argument "Alizarin Crimson" would result in a return 
     value of '<p style="color:#e32636;">Alizarin Crimson</p>'
     """
-    pass
+    with open(file="colours_865.csv") as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            if colour_name == row["English"]:
+                return f"<p style='color:{row["HEX"]};'>{row["English"]}</p>"
+
+color_name_865 = "blue"
+test = generate_coloured_text(color_name_865)
+
 
 def galactic_speed_percentile(galactic_speed: float):
     """The "galaxies.csv" file is a .csv file WITHOUT a header. It describes
@@ -69,4 +90,13 @@ def galactic_speed_percentile(galactic_speed: float):
         0% of the listed galaxies are travelling faster than 999999km/sec 
     """
     
-    pass
+    with open(file="galaxies.csv") as file:
+        reader = csv.reader(file)
+        slower_galaxies_count = 0
+
+        for row in reader:
+            speed = row[1]
+            if float(speed) > galactic_speed:
+                slower_galaxies_count += 1
+    
+    return 100 * slower_galaxies_count / 82
